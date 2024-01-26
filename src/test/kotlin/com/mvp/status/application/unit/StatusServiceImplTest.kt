@@ -1,0 +1,68 @@
+package com.mvp.status.application.unit
+
+import com.mvp.status.domain.model.exception.Exceptions
+import com.mvp.status.domain.model.payment.OrderByIdResponseDTO
+import com.mvp.status.domain.model.payment.RequestStatusDTO
+import com.mvp.status.domain.service.payment.StatusService
+import com.mvp.status.domain.service.payment.StatusServiceImpl
+import com.mvp.status.infrastruture.entity.StatusEntity
+import com.mvp.status.infrastruture.repository.StatusRepository
+import io.mockk.every
+import io.mockk.verify
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotNull
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.test.context.ActiveProfiles
+import java.math.BigDecimal
+import java.util.*
+
+@SpringBootTest
+@ActiveProfiles("test")
+class StatusServiceImplTest {
+
+    @Autowired
+    private lateinit var statusService: StatusService
+    @Autowired
+    private lateinit var statusRepository: StatusRepository
+
+    private lateinit var statusEntity: StatusEntity
+
+    @BeforeEach
+    fun setUp() {
+        statusService = StatusServiceImpl(statusRepository)
+
+        statusEntity = StatusEntity(
+            externalId = "69b47112-6590-4a08-935a-af93b30ff8c8",
+            idClient = 1,
+            totalPrice = BigDecimal.TEN,
+            status = "PENDING",
+            isFinished = false
+        )
+    }
+
+    @Test
+    fun `should return OrderByIdResponseDTO when status is found`() {
+        statusRepository.save(statusEntity)
+        val requestStatusDTO = RequestStatusDTO("69b47112-6590-4a08-935a-af93b30ff8c8")
+        val orderByIdResponseDTO = OrderByIdResponseDTO.fromOrderEntityToOrderByIdResponseDTO(statusEntity)
+
+        val result = statusService.getStatusByExternalId(requestStatusDTO)
+        val expected = statusRepository.findByExternalId("69b47112-6590-4a08-935a-af93b30ff8c8")
+        assertNotNull(expected)
+        assertEquals(orderByIdResponseDTO.externalId, result.externalId)
+
+    }
+
+    @Test
+    fun `should throw exception when status is not found`() {
+        val requestStatusDTO = RequestStatusDTO("nonExistingId")
+
+        assertThrows<Exceptions.RequestedElementNotFoundException> {
+            statusService.getStatusByExternalId(requestStatusDTO)
+        }
+    }
+}

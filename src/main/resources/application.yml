@@ -1,0 +1,42 @@
+server:
+  port: 8097
+  servlet:
+    contextPath: /
+  error:
+    include-message: always
+
+spring-doc:
+  swagger-ui:
+    path: /swagger-ui.html
+
+spring:
+  profiles:
+    active: production
+  data:
+    mongodb:
+      uri: "${SPRING_DATA_MONGODB_URI}"
+    allow-bean-definition-overriding: true
+  docker:
+    compose:
+      file: "docker-compose.yml"
+
+logging:
+  level:
+    root:
+      org.springframework.web: "debug"
+      org.hibernate: "debug"
+
+cloud:
+  aws:
+    region:
+      static: us-east-1
+    credentials:
+      instance-profile: true
+    stack:
+      auto: false
+
+aws:
+  region: us-east-1
+  topicArn: "${TOPIC_ORDER_SNS}"
+  statusQueue: "${STATUS_QUEUE}"
+  statusSubscriptionOrder: "${STATUS_SUBSCRIPTION_ORDER}"

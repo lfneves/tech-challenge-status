@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  status-ws:
+    image: status-ws:latest
+    container_name: status-ws
+    build: .
+    ports:
+      - '8097:8097'
+    env_file:
+      - ./docker_compose.env
+    depends_on:
+      - mongo-status-db
+    networks:
+      - mvp-network
+
+  mongo-status-db:
+    image: mongo
+    ports:
+      - "27018:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=mongodb
+      - MONGO_INITDB_ROOT_PASSWORD=mongodb
+      - MONGO_INITDB_DATABASE=statusdb
+    networks:
+      - mvp-network
+
+networks:
+  mvp-network:
+    driver: bridge
