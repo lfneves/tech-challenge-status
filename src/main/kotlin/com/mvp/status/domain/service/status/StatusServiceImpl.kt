@@ -1,11 +1,8 @@
-package com.mvp.status.domain.service.payment
+package com.mvp.status.domain.service.status
 
 import com.mvp.status.domain.model.exception.Exceptions
 import com.mvp.status.domain.model.payment.OrderByIdResponseDTO
 import com.mvp.status.domain.model.payment.RequestStatusDTO
-import com.mvp.status.domain.model.payment.listener.NotificationTopicMessageDTO
-import com.mvp.status.domain.model.payment.listener.StatusListenerDTO
-import com.mvp.status.infrastruture.entity.StatusEntity
 import com.mvp.status.infrastruture.repository.StatusRepository
 import com.mvp.status.utils.ErrorMsgConstants.Companion.ERROR_ORDER_NOT_FOUND
 import org.slf4j.Logger
@@ -26,17 +23,5 @@ class StatusServiceImpl(
         } else {
            throw Exceptions.RequestedElementNotFoundException(ERROR_ORDER_NOT_FOUND)
        }
-    }
-
-    override fun saveListenerTopicMessage(notificationTopicMessageDTO: NotificationTopicMessageDTO) {
-        logger.info("StatusServiceImpl - saveListernerTopicMessage")
-        val statusEntity = StatusEntity.fromOrderNotification(notificationTopicMessageDTO)
-        statusRepository.save(statusEntity)
-    }
-
-    override fun saveListenerQueueMessage(statusListenerDTO: StatusListenerDTO) {
-        logger.info("StatusServiceImpl - saveListenerQueueMessage")
-        val statusEntity = StatusEntity.fromStatusListenerDTO(statusListenerDTO)
-        statusRepository.save(statusEntity)
     }
 }

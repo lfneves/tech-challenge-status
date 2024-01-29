@@ -1,4 +1,4 @@
-package com.mvp.status.domain.service.payment
+package com.mvp.status.domain.service.status
 
 import com.mvp.status.domain.model.payment.OrderByIdResponseDTO
 import com.mvp.status.domain.model.payment.RequestStatusDTO
@@ -9,7 +9,4 @@ interface StatusService {
 
     fun getStatusByExternalId(requestStatusDTO: RequestStatusDTO): OrderByIdResponseDTO
 
-    fun saveListenerTopicMessage(notificationTopicMessageDTO: NotificationTopicMessageDTO)
-
-    fun saveListenerQueueMessage(statusListenerDTO: StatusListenerDTO)
 }

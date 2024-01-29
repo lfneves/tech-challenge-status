@@ -2,7 +2,7 @@ package com.mvp.status.application.bdd
 
 import com.mvp.status.domain.model.payment.OrderByIdResponseDTO
 import com.mvp.status.domain.model.payment.RequestStatusDTO
-import com.mvp.status.domain.service.payment.StatusService
+import com.mvp.status.domain.service.status.StatusService
 import com.mvp.status.infrastruture.entity.StatusEntity
 import com.mvp.status.infrastruture.repository.StatusRepository
 import io.cucumber.java.en.Given

@@ -3,7 +3,7 @@ package com.mvp.status.application.v1
 
 import com.mvp.status.domain.model.payment.OrderByIdResponseDTO
 import com.mvp.status.domain.model.payment.RequestStatusDTO
-import com.mvp.status.domain.service.payment.StatusService
+import com.mvp.status.domain.service.status.StatusService
 import io.swagger.v3.oas.annotations.Operation
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity

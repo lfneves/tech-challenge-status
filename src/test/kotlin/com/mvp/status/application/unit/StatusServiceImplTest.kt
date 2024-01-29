@@ -3,8 +3,8 @@ package com.mvp.status.application.unit
 import com.mvp.status.domain.model.exception.Exceptions
 import com.mvp.status.domain.model.payment.OrderByIdResponseDTO
 import com.mvp.status.domain.model.payment.RequestStatusDTO
-import com.mvp.status.domain.service.payment.StatusService
-import com.mvp.status.domain.service.payment.StatusServiceImpl
+import com.mvp.status.domain.service.status.StatusService
+import com.mvp.status.domain.service.status.StatusServiceImpl
 import com.mvp.status.infrastruture.entity.StatusEntity
 import com.mvp.status.infrastruture.repository.StatusRepository
 import io.mockk.every
