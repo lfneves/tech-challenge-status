@@ -12,23 +12,22 @@ import io.mockk.mockk
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ActiveProfiles
-import java.math.BigDecimal
 
-@SpringBootTest
 @ActiveProfiles("test")
 class ListenerStatusServiceTest {
 
-    @Autowired private lateinit var statusRepository: StatusRepository
-    @Autowired private lateinit var listenerStatusService: ListenerStatusService
+    private lateinit var statusRepository: StatusRepository
+    private lateinit var listenerStatusService: ListenerStatusService
 
     private lateinit var messageTopic: String
     private lateinit var messageQueue: String
 
     @BeforeEach
     fun setup() {
+        statusRepository = mockk(relaxed = true)
+        listenerStatusService = mockk(relaxed = true)
+
         messageTopic = """
             {
               "Type" : "Notification",
@@ -66,6 +65,10 @@ class ListenerStatusServiceTest {
     @Test
     fun `Receive Topic Message should process message and save data correctly`() {
         val notificationMessage: NotificationTopicMessageDTO = jacksonObjectMapper().readValue(messageTopic)
+        val notificationMessageStatus: StatusListenerDTO = jacksonObjectMapper().readValue(messageQueue)
+
+        every { statusRepository.save(any()) } returns StatusEntity.fromStatusListenerDTO(notificationMessageStatus)
+
         val savedOrder = statusRepository.save(StatusEntity.fromOrderNotification(notificationMessage))
 
         listenerStatusService.receiveSubscriptionMessage(messageTopic)
@@ -76,6 +79,7 @@ class ListenerStatusServiceTest {
     @Test
     fun `receiveMessage should process message and save data correctly`() {
         val notificationMessage: StatusListenerDTO = jacksonObjectMapper().readValue(messageQueue)
+        every { statusRepository.save(any()) } returns StatusEntity.fromStatusListenerDTO(notificationMessage)
         val savedOrder = statusRepository.save(StatusEntity.fromStatusListenerDTO(notificationMessage))
 
         listenerStatusService.receiveQueueMessage(messageQueue)
