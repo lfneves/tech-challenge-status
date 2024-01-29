@@ -10,6 +10,7 @@ plugins {
 	kotlin("plugin.serialization") version "1.9.21"
 	kotlin("plugin.jpa") version "1.9.21"
 	id("com.sourcemuse.mongo") version "2.0.0"
+	id("org.sonarqube") version "4.4.1.3373"
 	jacoco
 }
 
@@ -164,5 +165,13 @@ tasks.jacocoTestCoverageVerification {
 				minimum = BigDecimal.valueOf(0.8)  // 80% coverage
 			}
 		}
+	}
+}
+
+sonar {
+	properties {
+		property("sonar.projectKey", "lfneves_tech-challenge-status")
+		property("sonar.organization", "lfneves")
+		property("sonar.host.url", "https://sonarcloud.io")
 	}
 }
