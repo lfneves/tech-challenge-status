@@ -8,26 +8,21 @@ import com.mvp.status.domain.service.payment.StatusServiceImpl
 import com.mvp.status.infrastruture.entity.StatusEntity
 import com.mvp.status.infrastruture.repository.StatusRepository
 import io.mockk.every
-import io.mockk.verify
+import io.mockk.mockk
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ActiveProfiles
 import java.math.BigDecimal
 import java.util.*
 
-@SpringBootTest
 @ActiveProfiles("test")
 class StatusServiceImplTest {
 
-    @Autowired
-    private lateinit var statusService: StatusService
-    @Autowired
-    private lateinit var statusRepository: StatusRepository
+    private var statusService: StatusService = mockk(relaxed = true)
+    private val statusRepository: StatusRepository = mockk(relaxed = true)
 
     private lateinit var statusEntity: StatusEntity
 
@@ -46,9 +41,12 @@ class StatusServiceImplTest {
 
     @Test
     fun `should return OrderByIdResponseDTO when status is found`() {
+        every { statusRepository.save(any()) } returns statusEntity
         statusRepository.save(statusEntity)
         val requestStatusDTO = RequestStatusDTO("69b47112-6590-4a08-935a-af93b30ff8c8")
         val orderByIdResponseDTO = OrderByIdResponseDTO.fromOrderEntityToOrderByIdResponseDTO(statusEntity)
+
+        every { statusRepository.findByExternalId(any()) } returns Optional.of(statusEntity)
 
         val result = statusService.getStatusByExternalId(requestStatusDTO)
         val expected = statusRepository.findByExternalId("69b47112-6590-4a08-935a-af93b30ff8c8")
