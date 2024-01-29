@@ -14,7 +14,7 @@ spring:
     active: production
   data:
     mongodb:
-      uri: "${SPRING_DATA_MONGODB_URI}"
+      uri: "${SPRING_DATA_MONGODB_URI:mongodb://mongodb:mongodb@mongo-status-db:27017/statusdb?authSource=admin}"
     allow-bean-definition-overriding: true
   docker:
     compose:
