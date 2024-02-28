@@ -40,3 +40,7 @@ aws:
   topicArn: "${TOPIC_ORDER_SNS}"
   statusQueue: "${STATUS_QUEUE}"
   statusSubscriptionOrder: "${STATUS_SUBSCRIPTION_ORDER}"
+
+jwt:
+  # Development secret key, set new value production
+  secret: "${SECRET_KEY:eW91ci12ZXJ5LWxvbmctc2VjcmV0LXN0cmluZy1oZXJlLWRlZmF1bHQtZGV2LXZhbHVl}"
