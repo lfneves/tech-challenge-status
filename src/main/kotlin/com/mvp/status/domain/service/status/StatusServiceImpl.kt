@@ -21,7 +21,7 @@ class StatusServiceImpl(
        return if (response.isPresent) {
             OrderByIdResponseDTO.fromOrderEntityToOrderByIdResponseDTO(response.get())
         } else {
-           throw Exceptions.RequestedElementNotFoundException(ERROR_ORDER_NOT_FOUND)
+           throw Exceptions.NotFoundException(ERROR_ORDER_NOT_FOUND)
        }
     }
 }

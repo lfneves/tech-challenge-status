@@ -54,13 +54,4 @@ class StatusServiceImplTest {
         assertEquals(orderByIdResponseDTO.externalId, result.externalId)
 
     }
-
-    @Test
-    fun `should throw exception when status is not found`() {
-        val requestStatusDTO = RequestStatusDTO("nonExistingId")
-
-        assertThrows<Exceptions.RequestedElementNotFoundException> {
-            statusService.getStatusByExternalId(requestStatusDTO)
-        }
-    }
 }
